@@ -1,0 +1,43 @@
+{{ define "main" }}
+<article class="article">
+  {{ if .Section }}
+    <nav class="breadcrumb"><a href="{{ "/" | relURL }}">Home</a> › <a href="{{ .CurrentSection.RelPermalink }}">{{ .CurrentSection.Title }}</a></nav>
+  {{ end }}
+  <header class="article-head">
+    <h1>{{ .Title }}</h1>
+    {{ if .Section }}
+      <p class="meta">
+        {{ partial "icon.html" "calendar" }} <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        · {{ partial "icon.html" "clock" }} {{ .ReadingTime }} min read
+      </p>
+      {{ partial "tags.html" . }}
+      {{ with .GetTerms "series" }}
+        <p class="series-note">Part of the series {{ range $i, $s := . }}{{ if $i }}, {{ end }}<a href="{{ $s.RelPermalink }}"><mark>{{ $s.LinkTitle }}</mark></a>{{ end }}</p>
+      {{ end }}
+    {{ end }}
+  </header>
+
+  {{ with partial "image-url.html" (dict "page" . "param" "cover" "w" 1200 "h" 630) }}
+    <img class="article-cover" src="{{ . }}" alt="">
+  {{ end }}
+
+  {{ if and (ne .Params.toc false) (gt (len .TableOfContents) 80) (gt .WordCount 400) }}
+    <details class="toc" open>
+      <summary>Table of contents</summary>
+      {{ .TableOfContents }}
+    </details>
+  {{ end }}
+
+  <div class="prose">
+    {{ .Content }}
+  </div>
+
+  {{ if .Section }}
+    <nav class="prev-next">
+      {{- /* In Hugo, NextInSection is the newer page and PrevInSection the older one. */}}
+      {{ with .PrevInSection }}<a class="prev" href="{{ .RelPermalink }}"><small>{{ partial "icon.html" "arrow-left" }} Older</small>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
+      {{ with .NextInSection }}<a class="next" href="{{ .RelPermalink }}"><small>Newer {{ partial "icon.html" "arrow-right" }}</small>{{ .Title }}</a>{{ end }}
+    </nav>
+  {{ end }}
+</article>
+{{ end }}

@@ -1,0 +1,25 @@
+{{ define "main" }}
+<article class="article recipe">
+  <nav class="breadcrumb"><a href="{{ "/" | relURL }}">Home</a> › <a href="{{ .CurrentSection.RelPermalink }}">{{ .CurrentSection.Title }}</a></nav>
+  <header class="article-head">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+    <ul class="recipe-facts">
+      {{ with .Params.time }}<li>{{ partial "icon.html" "clock" }}<span><small>Time</small>{{ . }}</span></li>{{ end }}
+      {{ with .Params.servings }}<li>{{ partial "icon.html" "users" }}<span><small>Makes</small>{{ . }}</span></li>{{ end }}
+      {{ with .Params.category }}<li>{{ partial "icon.html" "chef" }}<span><small>Category</small>{{ . }}</span></li>{{ end }}
+    </ul>
+  </header>
+  {{ with partial "image-url.html" (dict "page" . "param" "photo" "w" 1200 "h" 800) }}
+    <img class="article-cover" src="{{ . }}" alt="{{ $.Title }}">
+  {{ end }}
+  <div class="prose">
+    {{ .Content }}
+  </div>
+  {{ with .Resources.Match "gallery/*" }}
+    <div class="gallery">
+      {{ range . }}<a href="{{ .RelPermalink }}"><img src="{{ (.Fill "500x500").RelPermalink }}" alt="" loading="lazy"></a>{{ end }}
+    </div>
+  {{ end }}
+</article>
+{{ end }}

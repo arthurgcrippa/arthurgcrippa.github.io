@@ -1,0 +1,24 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="{{ "/" | relURL }}">AC<mark>.</mark></a>
+    <button class="icon-btn nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      {{ partial "icon.html" "menu" }}
+    </button>
+    <nav id="site-nav" class="site-nav">
+      {{ $current := . }}
+      {{ range site.Menus.main }}
+        {{ $active := or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }}
+        {{ if and (eq .PageRef "/") (not $current.IsHome) }}{{ $active = false }}{{ end }}
+        {{ with .Page }}{{ if and (not $active) (eq $current.Section .Section) (ne .Section "") }}{{ $active = true }}{{ end }}{{ end }}
+        <a href="{{ .URL }}"{{ if $active }} class="active" aria-current="page"{{ end }}>{{ .Name }}</a>
+      {{ end }}
+      <span class="nav-icons">
+        <a class="icon-btn" href="{{ "/search/" | relURL }}" aria-label="Search">{{ partial "icon.html" "search" }}</a>
+        <button class="icon-btn theme-toggle" aria-label="Toggle dark mode">
+          <span class="icon-sun">{{ partial "icon.html" "sun" }}</span>
+          <span class="icon-moon">{{ partial "icon.html" "moon" }}</span>
+        </button>
+      </span>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,10 @@
+{{ define "main" }}
+<header class="page-head">
+  <h1>Search</h1>
+</header>
+<div class="search" data-index="{{ "index.json" | relURL }}">
+  <input type="search" id="search-input" placeholder="b-trees, rust, pão de queijo…" autocomplete="off" autofocus aria-label="Search the site">
+  <p class="meta" id="search-status"></p>
+  <ul class="search-results" id="search-results"></ul>
+</div>
+{{ end }}

@@ -1,0 +1,45 @@
+{{ define "main" }}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+
+{{ $pages := .Pages }}
+{{ $tags := slice }}
+{{ $series := slice }}
+{{ range $pages }}
+  {{ with .Params.tags }}{{ $tags = $tags | append . }}{{ end }}
+  {{ with .Params.series }}{{ $series = $series | append . }}{{ end }}
+{{ end }}
+
+{{ if or $tags $series }}
+<div class="filters" data-filter-target=".post-list">
+  {{ with $tags | uniq | sort }}
+    <div class="filter-row">
+      <span class="filter-label">Tags</span>
+      {{ range . }}<button class="chip" data-kind="tags" data-value="{{ . }}">{{ . }}</button>{{ end }}
+    </div>
+  {{ end }}
+  {{ with $series | uniq | sort }}
+    <div class="filter-row">
+      <span class="filter-label">Series</span>
+      {{ range . }}<button class="chip" data-kind="series" data-value="{{ . }}">{{ . }}</button>{{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}
+
+{{ with $pages }}
+  {{ range .GroupByDate "2006" }}
+    <section class="year-group">
+      <h2 class="year">{{ .Key }}</h2>
+      <div class="post-list">
+        {{ range .Pages }}{{ partial "post-card.html" . }}{{ end }}
+      </div>
+    </section>
+  {{ end }}
+  <p class="empty filter-empty" hidden>No posts match this filter.</p>
+{{ else }}
+  <p class="empty">The first post is on its way.</p>
+{{ end }}
+{{ end }}

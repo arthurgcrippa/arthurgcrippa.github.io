@@ -1,0 +1,41 @@
+{{ define "main" }}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+
+{{ $categories := slice }}
+{{ range .Pages }}{{ with .Params.category }}{{ $categories = $categories | append . }}{{ end }}{{ end }}
+{{ with $categories | uniq | sort }}
+<div class="filters" data-filter-target=".recipe-grid">
+  <div class="filter-row">
+    {{ range . }}<button class="chip" data-kind="category" data-value="{{ . }}">{{ . }}</button>{{ end }}
+  </div>
+</div>
+{{ end }}
+
+{{ with .Pages }}
+  <div class="recipe-grid">
+    {{ range . }}
+      {{ $photo := partial "image-url.html" (dict "page" . "param" "photo" "w" 600 "h" 450) }}
+      <a class="card recipe-card" href="{{ .RelPermalink }}" data-category="{{ .Params.category }}">
+        {{ with $photo }}
+          <img src="{{ . }}" alt="" loading="lazy">
+        {{ else }}
+          <span class="recipe-fallback">{{ partial "icon.html" "chef" }}</span>
+        {{ end }}
+        <span class="recipe-body">
+          <strong>{{ .Title }}</strong>
+          <span class="meta">
+            {{ with .Params.time }}{{ partial "icon.html" "clock" }} {{ . }}{{ end }}
+            {{ with .Params.servings }} · {{ . }}{{ end }}
+          </span>
+        </span>
+      </a>
+    {{ end }}
+  </div>
+  <p class="empty filter-empty" hidden>No recipes in this category.</p>
+{{ else }}
+  <p class="empty">The kitchen is warming up. Recipes coming soon.</p>
+{{ end }}
+{{ end }}

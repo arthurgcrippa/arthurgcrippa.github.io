@@ -1,0 +1,60 @@
+baseURL = "https://arthurgcrippa.github.io/"
+locale = "en-us"
+title = "Arthur Crippa"
+enableRobotsTXT = true
+summaryLength = 30
+capitalizeListTitles = false
+
+[params]
+  author = "Arthur Crippa"
+  description = "Study notes on software, security and computer science."
+  hero = "Just <mark>Arthur</mark>."
+  heroSubtitle = "Study notes on software, security and computer science, by Arthur Crippa."
+
+  [params.social]
+    github = "https://github.com/arthurgcrippa"
+    linkedin = ""
+    email = ""
+
+[taxonomies]
+  tag = "tags"
+  series = "series"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[menus]
+  [[menus.main]]
+    name = "Home"
+    pageRef = "/"
+    weight = 10
+  [[menus.main]]
+    name = "Posts"
+    pageRef = "/posts"
+    weight = 20
+  [[menus.main]]
+    name = "Notes"
+    pageRef = "/notes"
+    weight = 30
+  [[menus.main]]
+    name = "Cookbook"
+    pageRef = "/cookbook"
+    weight = 40
+  [[menus.main]]
+    name = "Bookshelf"
+    pageRef = "/bookshelf"
+    weight = 50
+  [[menus.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 60
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+    noClasses = true
+    style = "github-dark"
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3

@@ -1,0 +1,25 @@
+{{- /*
+  Resolves an image front matter param (e.g. "cover") to a URL.
+  The value can be a file inside the page bundle ("cover.jpg"), which gets
+  cropped to w x h, or any other path/URL ("/images/x.jpg"), used as-is.
+  Usage: partial "image-url.html" (dict "page" . "param" "cover" "w" 480 "h" 320)
+*/ -}}
+{{- $url := "" -}}
+{{- $w := .w -}}
+{{- $h := .h -}}
+{{- with index .page.Params .param -}}
+  {{- $src := . -}}
+  {{- with $.page.Resources.Get $src -}}
+    {{- if in (slice "jpeg" "png" "webp") .MediaType.SubType -}}
+      {{- $url = (.Fill (printf "%dx%d" $w $h)).RelPermalink -}}
+    {{- else -}}
+      {{- $url = .RelPermalink -}}
+    {{- end -}}
+  {{- else -}}
+    {{- /* A bare filename that isn't in the bundle is treated as missing. */ -}}
+    {{- if or (hasPrefix $src "/") (hasPrefix $src "http") -}}
+      {{- $url = $src | relURL -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $url -}}

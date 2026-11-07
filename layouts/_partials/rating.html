@@ -1,0 +1,1 @@
+{{ with .Params.rating }}<span class="rating" aria-label="{{ . }} out of 5">{{ strings.Repeat (int .) "★" }}{{ strings.Repeat (sub 5 (int .)) "☆" }}</span>{{ end }}

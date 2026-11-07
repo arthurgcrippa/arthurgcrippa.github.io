@@ -1,0 +1,16 @@
+{{ $thumb := partial "image-url.html" (dict "page" . "param" "cover" "w" 320 "h" 214) }}
+<article class="card post-card" data-tags="{{ delimit (.Params.tags | default slice) "," }}" data-series="{{ delimit (.Params.series | default slice) "," }}">
+  <a class="post-card-thumb" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
+    {{ with $thumb }}
+      <img src="{{ . }}" alt="" loading="lazy">
+    {{ else }}
+      <span class="thumb-fallback">{{ with .Params.tags }}#{{ index . 0 }}{{ else }}{{ substr $.Title 0 1 }}{{ end }}</span>
+    {{ end }}
+  </a>
+  <div class="post-card-body">
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    <p class="meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
+    {{ with .Description }}<p class="summary">{{ . }}</p>{{ end }}
+    {{ partial "tags.html" . }}
+  </div>
+</article>

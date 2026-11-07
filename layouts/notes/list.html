@@ -1,0 +1,26 @@
+{{ define "main" }}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+{{ with .Pages }}
+  {{ range .GroupByDate "2006" }}
+    <section class="year-group">
+      <h2 class="year">{{ .Key }}</h2>
+      <ul class="note-list">
+        {{ range .Pages }}
+          <li>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time>
+            <div>
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              <p class="summary">{{ .Summary | plainify | truncate 140 }}</p>
+            </div>
+          </li>
+        {{ end }}
+      </ul>
+    </section>
+  {{ end }}
+{{ else }}
+  <p class="empty">No notes yet.</p>
+{{ end }}
+{{ end }}

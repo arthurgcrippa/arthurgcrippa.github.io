@@ -1,0 +1,14 @@
+{{ define "main" }}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+{{ .Content }}
+{{ with .Pages }}
+  <div class="post-list">
+    {{ range . }}{{ partial "post-card.html" . }}{{ end }}
+  </div>
+{{ else }}
+  <p class="empty">Nothing here yet.</p>
+{{ end }}
+{{ end }}

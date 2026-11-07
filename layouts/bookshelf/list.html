@@ -1,0 +1,61 @@
+{{ define "main" }}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+
+{{ $reading := where .Pages "Params.status" "reading" }}
+{{ $read := where .Pages "Params.status" "read" }}
+{{ $want := where .Pages "Params.status" "want" }}
+
+{{ if not .Pages }}<p class="empty">The shelf is empty for now.</p>{{ end }}
+
+{{ with $reading }}
+<section class="section">
+  <h2 class="shelf-title"><mark>Currently reading</mark></h2>
+  <div class="reading-list">
+    {{ range . }}
+      <a class="card reading-card" href="{{ .RelPermalink }}">
+        {{ partial "book-cover.html" . }}
+        <span class="reading-body">
+          <strong>{{ .Title }}</strong>
+          <span class="meta">{{ .Params.author }}{{ with .Params.started }} · started {{ time.Format "Jan 2006" . }}{{ end }}</span>
+          {{ with .Params.progress }}
+            <span class="progress" role="progressbar" aria-valuenow="{{ . }}" aria-valuemin="0" aria-valuemax="100"><span style="width: {{ . }}%"></span></span>
+            <span class="meta">{{ . }}% read</span>
+          {{ end }}
+        </span>
+      </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+
+{{ with $read }}
+<section class="section">
+  <h2 class="shelf-title"><mark>Read</mark></h2>
+  {{ range .GroupByParamDate "finished" "2006" }}
+    <h3 class="year">{{ .Key }}</h3>
+    <div class="book-grid">
+      {{ range .Pages }}
+        <a class="book" href="{{ .RelPermalink }}">
+          {{ partial "book-cover.html" . }}
+          <strong>{{ .Title }}</strong>
+          <span class="meta">{{ .Params.author }}</span>
+          {{ partial "rating.html" . }}
+        </a>
+      {{ end }}
+    </div>
+  {{ end }}
+</section>
+{{ end }}
+
+{{ with $want }}
+<section class="section">
+  <h2 class="shelf-title"><mark>Want to read</mark></h2>
+  <ul class="want-list">
+    {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <span class="meta">· {{ .Params.author }}</span></li>{{ end }}
+  </ul>
+</section>
+{{ end }}
+{{ end }}

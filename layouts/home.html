@@ -1,0 +1,36 @@
+{{ define "main" }}
+<section class="hero">
+  <h1>{{ site.Params.hero | safeHTML }}</h1>
+  <p class="lead">{{ site.Params.heroSubtitle }}</p>
+  {{ partial "social.html" . }}
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Recent posts</h2>
+    <a class="more" href="{{ "/posts/" | relURL }}">All posts {{ partial "icon.html" "arrow-right" }}</a>
+  </div>
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  {{ with $posts }}
+    <div class="post-list">
+      {{ range first 6 . }}{{ partial "post-card.html" . }}{{ end }}
+    </div>
+  {{ else }}
+    <p class="empty">The first post is on its way.</p>
+  {{ end }}
+</section>
+
+{{ with first 3 (where site.RegularPages "Section" "notes") }}
+<section class="section">
+  <div class="section-head">
+    <h2>Latest notes</h2>
+    <a class="more" href="{{ "/notes/" | relURL }}">All notes {{ partial "icon.html" "arrow-right" }}</a>
+  </div>
+  <ul class="note-list">
+    {{ range . }}
+      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
+{{ end }}

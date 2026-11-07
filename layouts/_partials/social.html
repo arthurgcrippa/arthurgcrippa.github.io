@@ -1,0 +1,6 @@
+<span class="social">
+  {{ with site.Params.social.github }}<a href="{{ . }}" aria-label="GitHub" rel="me">{{ partial "icon.html" "github" }}</a>{{ end }}
+  {{ with site.Params.social.linkedin }}<a href="{{ . }}" aria-label="LinkedIn" rel="me">{{ partial "icon.html" "linkedin" }}</a>{{ end }}
+  {{ with site.Params.social.email }}<a href="mailto:{{ . }}" aria-label="Email">{{ partial "icon.html" "mail" }}</a>{{ end }}
+  {{ with site.Home.OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}" aria-label="RSS feed">{{ partial "icon.html" "rss" }}</a>{{ end }}
+</span>

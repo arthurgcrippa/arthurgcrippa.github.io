@@ -1,0 +1,11 @@
+{{ $img := partial "image-url.html" (dict "page" . "param" "cover" "w" 300 "h" 450) }}
+{{ with $img }}
+  <img class="book-cover" src="{{ . }}" alt="Cover of {{ $.Title }}" loading="lazy">
+{{ else }}
+  {{ $colors := slice "#2d4a7a" "#7a2d2d" "#2d6a4f" "#4a4a4a" "#b5651d" "#5b3f8c" }}
+  {{ $color := index $colors (mod (hash.FNV32a .Title) (len $colors)) }}
+  <div class="book-cover book-cover-fallback" style="background: {{ $color | safeCSS }}">
+    <span>{{ .Title }}</span>
+    {{ with .Params.author }}<small>{{ . }}</small>{{ end }}
+  </div>
+{{ end }}
