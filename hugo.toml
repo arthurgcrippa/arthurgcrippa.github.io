@@ -8,7 +8,7 @@ capitalizeListTitles = false
 [params]
   author = "Arthur Crippa"
   description = "Study notes on software, security and computer science."
-  hero = "Just <mark>Arthur</mark>."
+  hero = "Just <mark>Arthur</mark>"
   heroSubtitle = "Study notes on software, security and computer science, by Arthur Crippa."
 
   [params.social]
